@@ -1,0 +1,109 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../iron-ajax/iron-ajax.html">
+<link rel="import" href="../paper-card/paper-card.html">
+<link rel="import" href="../polymer/lib/elements/dom-repeat.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<dom-module id="product-list">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+
+      .card-header {
+        text-align: center;
+      }
+
+      paper-card {
+        --paper-card-header-image: {
+          width: 200px;
+          height: 150px;
+        }
+      }
+
+      paper-card {
+        --paper-card: {
+          margin-bottom: 20px;
+        }
+      }
+
+      .container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+      }
+
+      .precio {
+        font-size: 120%;
+        color: orange;
+      }
+    </style>
+    <div class="container">
+      <template is="dom-repeat" items="[[products]]" as="product">
+        <paper-card image="[[product.url]]">
+          <div class="card-content">
+            <div class="card-header">
+              <h3>[[product.name]]</h3>
+              <p class="descripcion">[[product.description]]</p>
+              <p class="precio">$[[product.price]]</p>
+              <paper-button on-tap="verProducto">Ver mas</paper-button>
+            </div>
+          </div>
+        </paper-card>
+      </template>
+    </div>
+  </template>
+
+  <script>
+    /**
+     * `product-list`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class ProductList extends Polymer.Element {
+      static get is() {
+        return 'product-list';
+      }
+      static get properties() {
+        return {
+          products: {
+            type: Array,
+            value() {
+              return [{
+                  name: "producto1",
+                  description: "descripcion1",
+                  url: "https://myrealmobile.com/content/images/thumbs/0000985_samsung-galaxy-j7-j710m_600.jpeg",
+                  price: 50
+                },
+                {
+                  name: "producto2",
+                  description: "descripcion2",
+                  url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbXY5SYagSYT6YdF0HLGIlANNtm81a8ZA2iqv3JGGosgaVuW3O",
+                  price: 1000
+                }
+              ]
+            }
+          },
+          serverUrl: {
+            type: String,
+            value: ""
+          }
+        };
+      }
+
+      verProducto(event) {
+        this.dispatchEvent(new CustomEvent("selected-product", {
+          bubbles: false,
+          composed: false,
+          detail: event.model.product
+        }));
+      }
+
+    }
+
+    window.customElements.define(ProductList.is, ProductList);
+  </script>
+</dom-module>
