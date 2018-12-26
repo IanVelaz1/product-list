@@ -1,15 +1,13 @@
 <link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../productsearch-element/productsearch-element.html">
 <link rel="import" href="../iron-ajax/iron-ajax.html">
 <link rel="import" href="../paper-card/paper-card.html">
 <link rel="import" href="../polymer/lib/elements/dom-repeat.html">
+<link rel="import" href="../polymer/lib/elements/dom-if.html">
 <link rel="import" href="../paper-button/paper-button.html">
 <dom-module id="product-list">
   <template>
     <style>
-      :host {
-        display: block;
-      }
-
       .card-header {
         text-align: center;
       }
@@ -17,7 +15,7 @@
       paper-card {
         --paper-card-header-image: {
           width: 200px;
-          height: 150px;
+          height: auto;
         }
       }
 
@@ -30,7 +28,7 @@
       .container {
         display: flex;
         flex-wrap: wrap;
-        justify-content: space-around;
+        justify-content: space-evenly;
       }
 
       .precio {
@@ -38,15 +36,21 @@
         color: orange;
       }
     </style>
+    <iron-ajax auto method="get" handle-as="json" url="[[serverUrl]]" on-response="productsRecovered" on-error="productsError">
+    </iron-ajax>
+    <template is="dom-if" if="[[!hiddenSearch]]">
+      <productsearch-element on-search-product="filterElements"></productsearch-element>
+    </template>
+    <br>
     <div class="container">
-      <template is="dom-repeat" items="[[products]]" as="product">
+      <template is="dom-repeat" items="[[products]]" as="product" filter="{{_filterProducts(filterValue)}}">
         <paper-card image="[[product.url]]">
           <div class="card-content">
             <div class="card-header">
               <h3>[[product.name]]</h3>
               <p class="descripcion">[[product.description]]</p>
               <p class="precio">$[[product.price]]</p>
-              <paper-button on-tap="verProducto">Ver mas</paper-button>
+              <paper-button on-tap="verProducto">[[language]]</paper-button>
             </div>
           </div>
         </paper-card>
@@ -72,26 +76,47 @@
           products: {
             type: Array,
             value() {
-              return [{
-                  name: "producto1",
-                  description: "descripcion1",
-                  url: "https://myrealmobile.com/content/images/thumbs/0000985_samsung-galaxy-j7-j710m_600.jpeg",
-                  price: 50
-                },
-                {
-                  name: "producto2",
-                  description: "descripcion2",
-                  url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbXY5SYagSYT6YdF0HLGIlANNtm81a8ZA2iqv3JGGosgaVuW3O",
-                  price: 1000
-                }
-              ]
+              return []
             }
           },
           serverUrl: {
             type: String,
             value: ""
+          },
+          filterValue: {
+            type: String,
+            value: ""
+          },
+          hiddenSearch: {
+            type: Boolean,
+            value: false
+          },
+          language:{
+            type:Object,
+            value(){
+             return {
+              
+             }
+            }
           }
         };
+      }
+
+      ready(){
+        super.ready();
+        
+      }
+
+      productsRecovered(event) {
+        this.set("products", event.detail.response);
+      }
+
+      productsError(event) {
+        this.dispatchEvent(new CustomEvent("products-error", {
+          bubbles: false,
+          composed: false,
+          detail: event.error
+        }))
       }
 
       verProducto(event) {
@@ -101,6 +126,21 @@
           detail: event.model.product
         }));
       }
+
+      filterElements(event) {
+        this.set("filterValue", event.detail);
+      }
+
+      _filterProducts(filterValue) {
+        if (!filterValue) {
+          return null
+        }
+        return function (producto) {
+          return producto.name.includes(filterValue);
+        }
+      }
+
+
 
     }
 
