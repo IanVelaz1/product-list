@@ -39,7 +39,7 @@
     <iron-ajax auto method="get" handle-as="json" url="[[serverUrl]]" on-response="productsRecovered" on-error="productsError">
     </iron-ajax>
     <template is="dom-if" if="[[!hiddenSearch]]">
-      <productsearch-element on-search-product="filterElements"></productsearch-element>
+      <productsearch-element on-search-product="filterElements" language="[[searchLanguage]]"></productsearch-element>
     </template>
     <br>
     <div class="container">
@@ -97,6 +97,12 @@
              return {
               
              }
+            }
+          },
+          searchLanguage:{
+            type:Object,
+            value(){
+              return{}
             }
           }
         };
