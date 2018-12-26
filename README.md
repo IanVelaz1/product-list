@@ -1,6 +1,32 @@
 # \<product-list\>
 
+## Install bower
+```
+$ npm i bower
+```
 
+## run bower install
+```
+$ npm i bower
+```
+## variables in product-list
+
+```
+products:Array // determines the products that will be displayed
+
+serverUrl: String // determines the get request direction for the products 
+
+language:Object   //determines the language of the button labels
+
+searchLanguage:Object //determines the language of the search component label
+
+filterValue:String //value recieved from on-search-product event from the productsearch-element it determines dynamic filter parameters for the dom-repeat
+
+hiddenSearch:Boolean // true for hiding the search component default (false)
+
+
+
+```
 
 ## Install the Polymer-CLI
 
