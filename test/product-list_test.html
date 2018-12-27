@@ -13,36 +13,20 @@
   </head>
   <body>
 
-    <test-fixture id="BasicTestFixture">
+    <test-fixture id="arrayRecievesProperties">
       <template>
         <product-list></product-list>
-      </template>
-    </test-fixture>
-
-    <test-fixture id="ChangedPropertyTestFixture">
-      <template>
-        <product-list prop1="new-prop1"></product-list>
       </template>
     </test-fixture>
 
     <script>
       suite('product-list', () => {
 
-        test('instantiating the element with default properties works', () => {
-          const element = fixture('BasicTestFixture');
-          assert.equal(element.prop1, 'product-list');
-          const elementShadowRoot = element.shadowRoot;
-          const elementHeader = elementShadowRoot.querySelector('h2');
-          assert.equal(elementHeader.innerHTML, 'Hello product-list!');
-        });
-
-        test('setting a property on the element works', () => {
-          // Create a test fixture
-          const element = fixture('ChangedPropertyTestFixture');
-          assert.equal(element.prop1, 'new-prop1');
-          const elementShadowRoot = element.shadowRoot;
-          const elementHeader = elementShadowRoot.querySelector('h2');
-          assert.equal(elementHeader.innerHTML, 'Hello new-prop1!');
+        test('pushing the products property array to see if it works', () => {
+          const element = fixture('arrayRecievesProperties');
+          element.push("products",{name:"prod1",description:"description",url:"url",price:"1234"})
+          assert.equal(element.products.length, 1);
+    
         });
 
       });

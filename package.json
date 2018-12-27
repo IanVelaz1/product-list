@@ -1,0 +1,31 @@
+{
+    "name": "product-list",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "directories": {
+      "test": "test"
+    },
+    "scripts": {
+      "test": "./node_modules/.bin/wct",
+      "coverage": "open coverage/lcov-report/index.html"
+    },
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/jusolete/product-list"
+    },
+    "keywords": [
+      "polymer2",
+      "element"
+    ],
+    "author": "@jusolete",
+    "license": "MIT",
+    "bugs": {
+      "url": "https://github.com/jusolete/product-list/issues"
+    },
+    "homepage": "https://github.com/jusolete/product-list#readme",
+    "devDependencies": {
+      "web-component-tester": "git+https://github.com/t2ym/web-component-tester.git#wct6-plugin",
+      "web-component-tester-istanbul": "git+https://github.com/t2ym/web-component-tester-istanbul.git#0.10.1-wct6.8"
+    }
+  }
